@@ -1,0 +1,34 @@
+#ImageNet Classification with Deep Convolutional Neural Networks
+##1 Introduction
+Our final network contains five convolutional and three fully-connected layers, and this depth seems to be important: we found that removing any convolutional layer (each of which contains no more than 1% of the model' s parameters) resulted in inferior performance.
+
+However, the immense complexity of the object recognition task means that this problem cannot be specified even by a dataset as large as ImageNet, so our model should also have lots of prior knowledge to compensate for all the data we don't have. 
+
+
+##3 The Architecture
+###3.1 ReLU Nonlinearity
+Deep convolutional neural networks with ReLUs train several times faster than their equivalents with tanh units. 
+
+In terms of training time with gradient descent, these saturating nonlinearities are much slower than the non-saturating nonlinearity f (x) = max(0, x). 
+
+ Deep convolutional neural net- works with ReLUs train several times faster than their
+equivalents with tanh units. 
+
+The parallelization scheme that we employ essentially puts half of the kernels (or neurons) on each GPU, with one additional trick: the GPUs communicate only in certain layers. 
+###3.3 Local Response Normalization
+关于局部响应归一化在[这里](https://www.jianshu.com/p/c06aea337d5d)有相关代码解读。
+
+ However, we still find that the following local normalization scheme aids generalization.
+###3.4 Overlapping Pooling
+We generally observe during training that models with overlapping pooling find it slightly more difficult to overfit.
+##4 Reducing Overfitting
+###4.1 Data Augmentation
+The first form of data augmentation consists of generating image translations and horizontal reflec-tions. We do this by extracting random 224 × 224 patches (and their horizontal reflections) from the 256×256 images and training our network on these extracted patches . 
+
+The second form of data augmentation consists of altering the intensities of the RGB channels in training images. Specifically, we perform PCA on the set of RGB pixel values throughout the ImageNet training set. 
+###4.2 Dropout
+At test time, we use all the neurons but multiply their outputs by 0.5, which is a reasonable approximation to taking the geometric mean of the predictive distributions produced by the exponentially-many dropout networks.
+##5 Details of learning
+We initialized the weights in each layer from a zero-mean Gaussian distribution with standard deviation 0.01. We initialized the neuron biases in the second, fourth, and fifth convolutional layers, as well as in the fully-connected hidden layers, with the constant 1. This initialization accelerates the early stages of learning by providing the ReLUs with positive inputs. We initialized the neuron biases in the remaining layers with the constant 0.
+
+We used an equal learning rate for all layers, which we adjusted manually throughout training. The heuristic which we followed was to divide the learning rate by 10 when the validation error rate stopped improving with the current learning rate. The learning rate was initialized at 0.01 and reduced three times prior to termination. 

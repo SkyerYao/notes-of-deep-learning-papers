@@ -1,0 +1,15 @@
+#Very Deep Convolutional Networks For Large-scale Image Recognition
+##1 Introduction
+In this paper, we address another important aspect of ConvNet architecture design – its depth. 
+
+##2 ConvNet Configurations
+###2.1 Architecture
+In one of the configurations we also utilise 1 × 1 convolution filters, which can be seen as a linear transformation of the input channels (followed by non-linearity). 
+ 
+Local Response  Normalisation(LRN) does not improve the performance on the ILSVRC dataset, but leads to increased memory consumption and computation time. 
+
+###2.3 Discussion
+ It is easy to see that a stack of two 3 × 3 conv. layers (without spatial pooling in between) has an effective receptive field of 5 × 5; three such layers have a 7 × 7effective receptive field.
+ 
+ The incorporation of 1 × 1 conv. layers (configuration C, Table 1) is a way to increase the non-linearity of the decision function without affecting the receptive fields of the conv. layers. 
+
